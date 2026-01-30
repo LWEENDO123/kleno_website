@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, FileResponse
 from pathlib import Path
 import os
 import boto3
@@ -26,7 +26,7 @@ def get_s3():
         endpoint_url=RAILWAY_ENDPOINT
     )
 
-@app.get("/")
+@app.get("/health")
 def health_check():
     """Simple health check route to confirm app is running."""
     return {"status": "ok"}
@@ -45,7 +45,12 @@ def download_apk():
     except Exception as e:
         return JSONResponse({"error": str(e)}, status_code=500)
 
-# Serve static assets
+# --- Serve static assets ---
 app.mount("/images", StaticFiles(directory=str(BASE_DIR / "images")), name="images")
 app.mount("/video", StaticFiles(directory=str(BASE_DIR / "video")), name="video")
-app.mount("/", StaticFiles(directory=str(BASE_DIR / "website"), html=True), name="site")
+app.mount("/static", StaticFiles(directory=str(BASE_DIR / "website")), name="static")
+
+@app.get("/")
+def homepage():
+    """Serve index.html as the homepage."""
+    return FileResponse(BASE_DIR / "website" / "index.html")
