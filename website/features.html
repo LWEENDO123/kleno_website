@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kleno – App Features</title>
+
+  <style>
+    :root{
+      --accent:#66D4FF;
+      --bg:#ffffff;
+      --text:#111;
+      --muted:#666;
+      --card:#f9f9fb;
+      --max-width:900px;
+      --gap:16px;
+    }
+
+    /* Base */
+    html,body{height:100%;margin:0;background:var(--bg);color:var(--text);font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+    a{color:var(--accent);text-decoration:none}
+    img,video{max-width:100%;height:auto;display:block;border-radius:12px;border:1px solid #eaeaea}
+    .container{max-width:var(--max-width);margin:0 auto;padding:18px}
+
+    /* Header */
+    .header{display:flex;align-items:center;gap:12px;padding:12px 0}
+    .logo{width:44px;height:44px;border-radius:10px;background:var(--accent);display:flex;align-items:center;justify-content:center;color:#000;font-weight:700}
+    .title{font-size:18px;font-weight:700}
+
+    /* Section */
+    .features-section{padding:8px 0}
+    .section-title{text-align:center;font-size:20px;margin:8px 0 18px 0}
+    .feature-block{background:var(--card);padding:14px;border-radius:12px;margin-bottom:14px;box-shadow:0 1px 0 rgba(0,0,0,0.03)}
+    .feature-block h3{font-size:16px;margin:0 0 8px 0;color:var(--accent)}
+    .feature-intro{font-size:14px;color:var(--muted);margin:0 0 10px 0;line-height:1.45}
+
+    /* Steps */
+    .steps-list{list-style:decimal;padding-left:18px;margin:0}
+    .steps-list li{margin-bottom:12px;display:flex;flex-direction:column;gap:8px}
+    .steps-list p{margin:0;font-size:14px;line-height:1.4}
+    .steps-list img{max-width:100%;border-radius:10px}
+
+    /* Video */
+    .video-wrapper{margin-top:8px}
+    .video-title{font-size:15px;margin-bottom:8px;font-weight:600}
+    .video-container{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:10px}
+    .video-container video, .video-container iframe{position:absolute;inset:0;width:100%;height:100%;border-radius:10px}
+
+    /* Download area */
+    .download-section{background:#fff;padding:14px;border-radius:12px;margin:18px 0;display:flex;flex-direction:column;gap:10px;align-items:center;box-shadow:0 1px 0 rgba(0,0,0,0.03)}
+    .download-section h3{font-size:16px;margin:0}
+    .download-section p{font-size:13px;color:var(--muted);margin:0;text-align:center}
+    .download-btn{background:var(--accent);color:#000;padding:12px 18px;border-radius:10px;border:none;font-weight:700;font-size:15px;cursor:pointer;width:100%;max-width:320px}
+    .status-text{font-size:13px;color:green;display:none}
+
+    /* Platform note */
+    .platform-note{background:#fff;padding:12px;border-radius:10px;border:1px solid #eee;margin-bottom:18px;font-size:13px;color:var(--muted)}
+    .platform-note h4{margin:0 0 6px 0;font-size:14px;color:var(--text)}
+
+    /* Modal */
+    .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:999;align-items:center;justify-content:center;padding:16px}
+    .modal-content{background:#fff;width:100%;max-width:420px;border-radius:12px;padding:16px}
+    .terms-box{max-height:50vh;overflow:auto;padding:8px;border-radius:8px;border:1px solid #eee;font-size:13px;color:var(--muted);margin-bottom:12px}
+    .agree-btn{background:#000;color:#fff;padding:10px;border-radius:8px;border:none;width:100%;font-weight:700}
+
+    /* Small tweaks for very small screens */
+    @media (max-width:420px){
+      :root{--gap:12px}
+      .container{padding:12px}
+      .section-title{font-size:18px}
+      .feature-block{padding:12px}
+      .download-btn{padding:12px}
+    }
+
+    /* Larger screens (tablet) keep comfortable spacing */
+    @media (min-width:700px){
+      .section-title{font-size:24px}
+      .feature-block{display:flex;gap:14px;align-items:flex-start}
+      .feature-block .content{flex:1}
+      .feature-block .media{width:260px;flex-shrink:0}
+      .steps-list img{max-width:260px}
+      .video-container{max-width:420px}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header" role="banner">
+      <div class="logo" aria-hidden="true">K</div>
+      <div>
+        <div class="title">Kleno</div>
+        <div style="font-size:12px;color:var(--muted)">Student transport & boarding helper</div>
+      </div>
+    </header>
+
+    <main class="features-section" role="main" aria-labelledby="featuresTitle">
+      <h1 id="featuresTitle" class="section-title">What Kleno Helps Students Do</h1>
+
+      <!-- YANGO -->
+      <article class="feature-block" aria-labelledby="yangoTitle">
+        <div class="content">
+          <h3 id="yangoTitle">🚕 Book a Yango Ride Easily</h3>
+          <p class="feature-intro">Request a Yango ride from the app and travel to the closest accessible point.</p>
+
+          <ol class="steps-list" aria-label="Yango booking steps">
+            <li>
+              <p><strong>Tap the Yango icon</strong> inside the Kleno app.</p>
+              <img src="/images/Yango_icon_1.jpg" alt="Yango icon" loading="lazy">
+            </li>
+            <li>
+              <p>Yango opens and loads nearby cars.</p>
+              <img src="/images/Yango_icon_2.jpg" alt="Nearby cars" loading="lazy">
+            </li>
+            <li>
+              <p>Tap the <strong>Where to</strong> field.</p>
+              <img src="/images/yango_loading.jpg" alt="Yango loading" loading="lazy">
+            </li>
+            <li>
+              <p>it will auto Adjust the map pin on the map please do not touch the pin as you might change destination.</p>
+              <img src="/images/nearby_cars.jpg" alt="Nearby cars on map" loading="lazy">
+            </li>
+            <li>
+              <p>the pin will move to the right destination and you can click the "DONE" button to see your request</button>.</p>
+              <img src="/images/pointer_done.jpg" alt="Confirm route" loading="lazy">
+            </li>
+            <li>
+              <p>Tap <strong>Request Ride</strong>.</p>
+              <img src="/images/click_done.jpg" alt="Request ride" loading="lazy">
+            </li>
+          </ol>
+
+          <div class="video-wrapper" style="margin-top:10px">
+            <div class="video-title">🎥 Video Tutorial: Booking a Ride</div>
+            <div class="video-container" aria-hidden="false">
+              <video src="/video/yango_tutorial.mp4" controls preload="metadata" aria-label="Yango tutorial"></video>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- GOOGLE MAPS -->
+      <article class="feature-block" aria-labelledby="mapsTitle">
+        <div class="content">
+          <h3 id="mapsTitle">🗺️ Find a Boarding House Using Google Maps</h3>
+          <p class="feature-intro">When cars cannot reach narrow roads, Kleno pins the closest walking point for accurate navigation.</p>
+
+          <ol class="steps-list" aria-label="Google maps steps">
+            <li>
+              <p><strong>Tap the Google Maps icon</strong> and allow location access.</p>
+              <img src="/images/google.jpg" alt="Google Maps icon" loading="lazy">
+            </li>
+            <li>
+              <p>Google Maps opens with directions.</p>
+              <img src="/images/google_2.jpg" alt="Google directions" loading="lazy">
+            </li>
+            <li>
+              <p>Tap <strong>Start</strong> or <strong>Preview</strong>.</p>
+              <img src="/images/google_3.jpg" alt="Google start preview" loading="lazy">
+            </li>
+            <li>
+              <p>Confirm arrival using map or satellite view.</p>
+              <img src="/images/google_3.jpg" alt="Map confirmation" loading="lazy">
+            </li>
+          </ol>
+        </div>
+      </article>
+
+      <!-- PROXY -->
+      <article class="feature-block" aria-labelledby="proxyTitle">
+        <div class="content">
+          <h3 id="proxyTitle">📍 Proxy Location</h3>
+          <p class="feature-intro">Find boarding houses closest to your current location.</p>
+        </div>
+      </article>
+
+      <!-- BUS STOP -->
+      <article class="feature-block" aria-labelledby="busTitle">
+        <div class="content">
+          <h3 id="busTitle">🚌 Bus Stop & Public Transport</h3>
+          <ul style="margin:8px 0 0 18px;padding:0;color:var(--muted);font-size:14px;line-height:1.5">
+            <li>Which bus to take</li>
+            <li>Estimated transport cost</li>
+            <li>Drop-off points</li>
+            <li>Walking directions</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- YEARBOOK -->
+      <article class="feature-block" aria-labelledby="yearbookTitle">
+        <div class="content">
+          <h3 id="yearbookTitle">📸 Student Yearbook</h3>
+          <p class="feature-intro">Capture memories linked to university events.</p>
+        </div>
+      </article>
+    </main>
+
+    <!-- DOWNLOAD -->
+    <section class="download-section" aria-labelledby="downloadTitle">
+      <h3 id="downloadTitle">Download Kleno (Beta)</h3>
+      <p>Please read and agree to the beta terms before downloading.</p>
+      <button class="download-btn" onclick="openModal()" aria-haspopup="dialog">Download APK</button>
+      <div class="status-text" id="downloadStatus">Your download is in progress…</div>
+    </section>
+
+    <!-- PLATFORM NOTE -->
+    <aside class="platform-note" aria-label="Platform availability">
+      <h4>Platform availability</h4>
+      <p><strong>Android:</strong> Available now. <strong>Minimum:</strong> Android 6.0 (Marshmallow) or above. We recommend at least <strong>1 GB free storage</strong> to make installation easier — this is a recommendation for smoother installation and does not mean the app will permanently consume that space.</p>
+      <p><strong>iOS:</strong> Coming soon. We will announce supported iOS versions when the iOS build is ready.</p>
+    </aside>
+
+    <!-- MODAL -->
+    <div class="modal" id="termsModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-content">
+        <h4 id="modalTitle">Kleno Beta – Terms & Conditions</h4>
+        <div class="terms-box">
+          <p>Kleno is currently in beta. Features may change and minor issues may occur.</p>
+          <ul>
+            <li>Performance may vary</li>
+            <li>Features may update</li>
+            <li>Feedback is appreciated</li>
+          </ul>
+        </div>
+        <button class="agree-btn" onclick="startDownload()">I Agree & Download</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openModal(){
+      const modal = document.getElementById('termsModal');
+      modal.style.display = 'flex';
+      modal.setAttribute('aria-hidden','false');
+    }
+
+    function startDownload(){
+      const modal = document.getElementById('termsModal');
+      modal.style.display = 'none';
+      modal.setAttribute('aria-hidden','true');
+      document.getElementById('downloadStatus').style.display = 'block';
+
+      const link = document.createElement('a');
+      link.href = '/kleno.apk';
+      link.download = 'kleno.apk';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    // Close modal on Escape or outside click
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape'){
+        const modal = document.getElementById('termsModal');
+        if(modal.style.display === 'flex'){
+          modal.style.display = 'none';
+          modal.setAttribute('aria-hidden','true');
+        }
+      }
+    });
+
+    document.addEventListener('click', function(e){
+      const modal = document.getElementById('termsModal');
+      if(modal.style.display === 'flex' && e.target === modal){
+        modal.style.display = 'none';
+        modal.setAttribute('aria-hidden','true');
+      }
+    });
+  </script>
+</body>
+</html>
