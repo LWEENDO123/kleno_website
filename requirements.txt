@@ -1,0 +1,3 @@
+fastapi
+uvicorn[standard]
+boto3   # (for your bucket integration later)
