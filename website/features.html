@@ -196,12 +196,90 @@
     </main>
 
     <!-- DOWNLOAD -->
-    <section class="download-section" aria-labelledby="downloadTitle">
-      <h3 id="downloadTitle">Download Kleno (Beta)</h3>
-      <p>Please read and agree to the beta terms before downloading.</p>
-      <button class="download-btn" onclick="openModal()" aria-haspopup="dialog">Download APK</button>
-      <div class="status-text" id="downloadStatus">Your download is in progress…</div>
-    </section>
+<section class="download-section" aria-labelledby="downloadTitle">
+  <h3 id="downloadTitle">Download Kleno (Beta)</h3>
+  <p>Please read and agree to the beta terms before downloading.</p>
+
+  <div style="width:100%;max-width:360px;display:flex;gap:10px;flex-direction:column;align-items:center">
+    <button id="openTermsBtn" class="download-btn" aria-haspopup="dialog" aria-controls="termsModal">Download APK</button>
+    <div class="status-text" id="downloadStatus" role="status" aria-live="polite">Your download is in progress…</div>
+  </div>
+</section>
+
+<script>
+  // Open modal (keeps existing modal behavior)
+  document.getElementById('openTermsBtn').addEventListener('click', function () {
+    const modal = document.getElementById('termsModal');
+    modal.style.display = 'flex';
+    modal.setAttribute('aria-hidden', 'false');
+    // Move focus into modal for accessibility
+    const firstFocusable = modal.querySelector('.agree-btn');
+    if (firstFocusable) firstFocusable.focus();
+  });
+
+  // Called when user agrees in the modal
+  async function startDownload() {
+    const modal = document.getElementById('termsModal');
+    modal.style.display = 'none';
+    modal.setAttribute('aria-hidden', 'true');
+
+    const status = document.getElementById('downloadStatus');
+    status.style.display = 'block';
+    status.textContent = 'Preparing download…';
+
+    try {
+      // Request pre-signed URL from backend
+      const res = await fetch('/download-apk', { method: 'GET', credentials: 'same-origin' });
+      if (!res.ok) throw new Error('Server returned ' + res.status);
+      const data = await res.json();
+
+      if (!data || !data.download_url) throw new Error('No download URL returned');
+
+      status.textContent = 'Starting download…';
+      // Redirect to the pre-signed URL to start download
+      window.location.href = data.download_url;
+
+      // Optionally hide status after a short delay
+      setTimeout(() => { status.style.display = 'none'; }, 5000);
+    } catch (err) {
+      console.error(err);
+      status.style.display = 'block';
+      status.style.color = 'crimson';
+      status.textContent = 'Download failed. Please try again later.';
+      // Restore color after a while
+      setTimeout(() => {
+        status.style.color = 'green';
+      }, 4000);
+    }
+  }
+
+  // Close modal on Escape and outside click (keeps existing behavior)
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+      const modal = document.getElementById('termsModal');
+      if (modal.style.display === 'flex') {
+        modal.style.display = 'none';
+        modal.setAttribute('aria-hidden', 'true');
+      }
+    }
+  });
+
+  document.addEventListener('click', function (e) {
+    const modal = document.getElementById('termsModal');
+    if (modal.style.display === 'flex' && e.target === modal) {
+      modal.style.display = 'none';
+      modal.setAttribute('aria-hidden', 'true');
+    }
+  });
+
+  // Ensure the modal's agree button calls this updated startDownload function
+  const agreeBtn = document.querySelector('.agree-btn');
+  if (agreeBtn) {
+    agreeBtn.removeAttribute('onclick');
+    agreeBtn.addEventListener('click', startDownload);
+  }
+</script>
+
 
     <!-- PLATFORM NOTE -->
     <aside class="platform-note" aria-label="Platform availability">
