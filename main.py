@@ -54,3 +54,14 @@ app.mount("/static", StaticFiles(directory=str(BASE_DIR / "website")), name="sta
 def homepage():
     """Serve index.html as the homepage."""
     return FileResponse(BASE_DIR / "website" / "index.html")
+
+
+@app.get("/favicon.ico")
+def favicon():
+    return FileResponse(BASE_DIR / "website" / "favicon.ico")
+
+
+@app.get("/features.html")
+def features_page():
+    return FileResponse(BASE_DIR / "website" / "features.html")
+
