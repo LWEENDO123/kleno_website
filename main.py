@@ -48,7 +48,7 @@ def download_apk():
 # --- Serve static assets ---
 app.mount("/images", StaticFiles(directory=str(BASE_DIR / "images")), name="images")
 app.mount("/video", StaticFiles(directory=str(BASE_DIR / "video")), name="video")
-app.mount("/static", StaticFiles(directory=str(BASE_DIR / "website")), name="static")
+app.mount("/", StaticFiles(directory=str(BASE_DIR / "website"), html=True), name="website")
 
 
 
