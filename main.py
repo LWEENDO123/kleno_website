@@ -48,17 +48,21 @@ def download_apk():
 # --- Serve static assets ---
 app.mount("/images", StaticFiles(directory=str(BASE_DIR / "images")), name="images")
 app.mount("/video", StaticFiles(directory=str(BASE_DIR / "video")), name="video")
+# Mount the website folder so index.html, features.html, favicon.ico, etc. are served automatically
 app.mount("/", StaticFiles(directory=str(BASE_DIR / "website"), html=True), name="website")
 
-
-
+# Explicit routes for homepage and features (optional, but useful if you want control)
 @app.get("/")
 def homepage():
     """Serve index.html as the homepage."""
     return FileResponse(BASE_DIR / "website" / "index.html")
 
+@app.get("/features.html")
+def features_page():
+    """Serve features.html explicitly."""
+    return FileResponse(BASE_DIR / "website" / "features.html")
 
-
-
-
-
+@app.get("/favicon.ico")
+def favicon():
+    """Serve favicon.ico explicitly."""
+    return FileResponse(BASE_DIR / "website" / "favicon.ico")
