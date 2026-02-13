@@ -49,6 +49,8 @@ def download_apk():
 app.mount("/images", StaticFiles(directory=str(BASE_DIR / "images")), name="images")
 app.mount("/video", StaticFiles(directory=str(BASE_DIR / "video")), name="video")
 app.mount("/static", StaticFiles(directory=str(BASE_DIR / "website")), name="static")
+app.mount("/", StaticFiles(directory=str(BASE_DIR / "website"), html=True), name="website")
+
 
 @app.get("/")
 def homepage():
@@ -56,9 +58,7 @@ def homepage():
     return FileResponse(BASE_DIR / "website" / "index.html")
 
 
-@app.get("/favicon.ico")
-def favicon():
-    return FileResponse(BASE_DIR / "website" / "favicon.ico")
+
 
 
 @app.get("/features.html")
