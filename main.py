@@ -49,7 +49,7 @@ def download_apk():
 app.mount("/images", StaticFiles(directory=str(BASE_DIR / "images")), name="images")
 app.mount("/video", StaticFiles(directory=str(BASE_DIR / "video")), name="video")
 app.mount("/static", StaticFiles(directory=str(BASE_DIR / "website")), name="static")
-app.mount("/", StaticFiles(directory=str(BASE_DIR / "website"), html=True), name="website")
+
 
 
 @app.get("/")
@@ -61,7 +61,4 @@ def homepage():
 
 
 
-@app.get("/features.html")
-def features_page():
-    return FileResponse(BASE_DIR / "website" / "features.html")
 
