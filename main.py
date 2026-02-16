@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import JSONResponse, FileResponse
+from fastapi.responses import FileResponse, JSONResponse, RedirectResponse
 from pathlib import Path
 import os
 import boto3
@@ -33,15 +33,15 @@ def health_check():
 
 @app.get("/download-apk")
 def download_apk():
-    """Generate a temporary download link for the APK."""
+    """Generate a presigned URL for the APK and redirect to it."""
     try:
         s3 = get_s3()
         url = s3.generate_presigned_url(
             "get_object",
             Params={"Bucket": RAILWAY_BUCKET_NAME, "Key": "kleno.apk"},
-            ExpiresIn=3600  # link valid for 1 hour
+            ExpiresIn=7776000  # ~90 days
         )
-        return JSONResponse({"download_url": url})
+        return RedirectResponse(url)
     except Exception as e:
         return JSONResponse({"error": str(e)}, status_code=500)
 
@@ -51,7 +51,7 @@ app.mount("/video", StaticFiles(directory=str(BASE_DIR / "video")), name="video"
 # Mount the website folder so index.html, features.html, favicon.ico, etc. are served automatically
 app.mount("/", StaticFiles(directory=str(BASE_DIR / "website"), html=True), name="website")
 
-# Explicit routes for homepage and features (optional, but useful if you want control)
+# Explicit routes for homepage and features
 @app.get("/")
 def homepage():
     """Serve index.html as the homepage."""
