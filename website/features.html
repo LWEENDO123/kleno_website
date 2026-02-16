@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Kleno – App Features</title>
+  <title>Kleno â€“ App Features</title>
 
   <style>
     :root{
@@ -99,7 +100,7 @@
       <!-- YANGO -->
       <article class="feature-block" aria-labelledby="yangoTitle">
         <div class="content">
-          <h3 id="yangoTitle">🚕 Book a Yango Ride Easily</h3>
+          <h3 id="yangoTitle">ðŸš• Book a Yango Ride Easily</h3>
           <p class="feature-intro">Request a Yango ride from the app and travel to the closest accessible point.</p>
 
           <ol class="steps-list" aria-label="Yango booking steps">
@@ -130,7 +131,7 @@
           </ol>
 
           <div class="video-wrapper" style="margin-top:10px">
-            <div class="video-title">🎥 Video Tutorial: Booking a Ride</div>
+            <div class="video-title">ðŸŽ¥ Video Tutorial: Booking a Ride</div>
             <div class="video-container" aria-hidden="false">
               <video src="/video/yango_tutorial.mp4" controls preload="metadata" aria-label="Yango tutorial"></video>
             </div>
@@ -141,7 +142,7 @@
       <!-- GOOGLE MAPS -->
       <article class="feature-block" aria-labelledby="mapsTitle">
         <div class="content">
-          <h3 id="mapsTitle">🗺️ Find a Boarding House Using Google Maps</h3>
+          <h3 id="mapsTitle">ðŸ—ºï¸ Find a Boarding House Using Google Maps</h3>
           <p class="feature-intro">When cars cannot reach narrow roads, Kleno pins the closest walking point for accurate navigation.</p>
 
           <ol class="steps-list" aria-label="Google maps steps">
@@ -168,7 +169,7 @@
       <!-- PROXY -->
       <article class="feature-block" aria-labelledby="proxyTitle">
         <div class="content">
-          <h3 id="proxyTitle">📍 Proxy Location</h3>
+          <h3 id="proxyTitle">ðŸ“ Proxy Location</h3>
           <p class="feature-intro">Find boarding houses closest to your current location.</p>
         </div>
       </article>
@@ -176,7 +177,7 @@
       <!-- BUS STOP -->
       <article class="feature-block" aria-labelledby="busTitle">
         <div class="content">
-          <h3 id="busTitle">🚌 Bus Stop & Public Transport</h3>
+          <h3 id="busTitle">ðŸšŒ Bus Stop & Public Transport</h3>
           <ul style="margin:8px 0 0 18px;padding:0;color:var(--muted);font-size:14px;line-height:1.5">
             <li>Which bus to take</li>
             <li>Estimated transport cost</li>
@@ -189,7 +190,7 @@
       <!-- YEARBOOK -->
       <article class="feature-block" aria-labelledby="yearbookTitle">
         <div class="content">
-          <h3 id="yearbookTitle">📸 Student Yearbook</h3>
+          <h3 id="yearbookTitle">ðŸ“¸ Student Yearbook</h3>
           <p class="feature-intro">Capture memories linked to university events.</p>
         </div>
       </article>
@@ -202,11 +203,13 @@
 
   <div style="width:100%;max-width:360px;display:flex;gap:10px;flex-direction:column;align-items:center">
     <button id="openTermsBtn" class="download-btn" aria-haspopup="dialog" aria-controls="termsModal">Download APK</button>
-    <div class="status-text" id="downloadStatus" role="status" aria-live="polite">Your download is in progress…</div>
+    <div class="status-text" id="downloadStatus" role="status" aria-live="polite">Your download is in progressâ€¦</div>
   </div>
 </section>
 
 <script>
+  const DOWNLOAD_URL = 'https://storage.railway.app/allocated-organizer-y95frn/kleno.apk?AWSAccessKeyId=tid__WjBeZAdBGIpuzLxVMRFGGjbNW_zwqgHIThSFciMIDSwIupfjU&Signature=jr0YV5dq4Sun8Y2WHptnkBNuaqQ%3D&Expires=1771194251';
+
   // Open modal (keeps existing modal behavior)
   document.getElementById('openTermsBtn').addEventListener('click', function () {
     const modal = document.getElementById('termsModal');
@@ -225,19 +228,11 @@
 
     const status = document.getElementById('downloadStatus');
     status.style.display = 'block';
-    status.textContent = 'Preparing download…';
+    status.textContent = 'Preparing downloadâ€¦';
 
     try {
-      // Request pre-signed URL from backend
-      const res = await fetch('/download-apk', { method: 'GET', credentials: 'same-origin' });
-      if (!res.ok) throw new Error('Server returned ' + res.status);
-      const data = await res.json();
-
-      if (!data || !data.download_url) throw new Error('No download URL returned');
-
-      status.textContent = 'Starting download…';
-      // Redirect to the pre-signed URL to start download
-      window.location.href = data.download_url;
+      status.textContent = 'Starting downloadâ€¦';
+      window.location.href = DOWNLOAD_URL;
 
       // Optionally hide status after a short delay
       setTimeout(() => { status.style.display = 'none'; }, 5000);
@@ -284,14 +279,14 @@
     <!-- PLATFORM NOTE -->
     <aside class="platform-note" aria-label="Platform availability">
       <h4>Platform availability</h4>
-      <p><strong>Android:</strong> Available now. <strong>Minimum:</strong> Android 6.0 (Marshmallow) or above. We recommend at least <strong>1 GB free storage</strong> to make installation easier — this is a recommendation for smoother installation and does not mean the app will permanently consume that space.</p>
+      <p><strong>Android:</strong> Available now. <strong>Minimum:</strong> Android 6.0 (Marshmallow) or above. We recommend at least <strong>1 GB free storage</strong> to make installation easier â€” this is a recommendation for smoother installation and does not mean the app will permanently consume that space.</p>
       <p><strong>iOS:</strong> Coming soon. We will announce supported iOS versions when the iOS build is ready.</p>
     </aside>
 
     <!-- MODAL -->
     <div class="modal" id="termsModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
       <div class="modal-content">
-        <h4 id="modalTitle">Kleno Beta – Terms & Conditions</h4>
+        <h4 id="modalTitle">Kleno Beta â€“ Terms & Conditions</h4>
         <div class="terms-box">
           <p>Kleno is currently in beta. Features may change and minor issues may occur.</p>
           <ul>
@@ -319,7 +314,7 @@
       document.getElementById('downloadStatus').style.display = 'block';
 
       const link = document.createElement('a');
-      link.href = '/kleno.apk';
+      link.href = 'https://storage.railway.app/allocated-organizer-y95frn/kleno.apk?AWSAccessKeyId=tid__WjBeZAdBGIpuzLxVMRFGGjbNW_zwqgHIThSFciMIDSwIupfjU&Signature=jr0YV5dq4Sun8Y2WHptnkBNuaqQ%3D&Expires=1771194251';
       link.download = 'kleno.apk';
       document.body.appendChild(link);
       link.click();
@@ -347,3 +342,4 @@
   </script>
 </body>
 </html>
+
