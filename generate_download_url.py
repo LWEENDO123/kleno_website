@@ -152,17 +152,23 @@ def main() -> int:
         return 1
 
     expires_at = datetime.now(timezone.utc) + timedelta(seconds=args.expires)
-    features = os.path.join(os.path.dirname(__file__), "website", "features.html")
-    if not args.print_only and os.path.isfile(features):
-        with open(features, "r", encoding="utf-8") as source:
-            page = source.read()
-        updated, replacements = LINK_PATTERN.subn(url, page)
-        if replacements:
-            with open(features, "w", encoding="utf-8", newline="") as destination:
-                destination.write(updated)
-            print(f"Updated {replacements} APK link(s) in website/features.html.")
-        else:
-            print("No existing APK link was found in website/features.html; the page was not changed.")
+    website_dir = os.path.join(os.path.dirname(__file__), "website")
+    total_replacements = 0
+    if not args.print_only and os.path.isdir(website_dir):
+        for filename in sorted(os.listdir(website_dir)):
+            if not filename.lower().endswith(".html"):
+                continue
+            page_path = os.path.join(website_dir, filename)
+            with open(page_path, "r", encoding="utf-8") as source:
+                page = source.read()
+            updated, replacements = LINK_PATTERN.subn(url, page)
+            if replacements:
+                with open(page_path, "w", encoding="utf-8", newline="") as destination:
+                    destination.write(updated)
+                total_replacements += replacements
+                print(f"Updated {replacements} APK link(s) in website/{filename}.")
+        if not total_replacements:
+            print("No APK links were found in website/*.html; website files were not changed.")
 
     print("\nFresh APK download URL (paste this into the website):\n")
     print(url)
