@@ -1,0 +1,82 @@
+from botocore.client import Config
+from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse, JSONResponse, RedirectResponse
+from pathlib import Path
+import os
+import boto3
+
+BASE_DIR = Path(__file__).parent.resolve()
+
+app = FastAPI(title="Kleno Landing")
+
+# --- Railway bucket config from env ---
+RAILWAY_BUCKET_NAME = os.getenv("RAILWAY_BUCKET_NAME")
+RAILWAY_ACCESS_KEY = os.getenv("RAILWAY_ACCESS_KEY")
+RAILWAY_SECRET_KEY = os.getenv("RAILWAY_SECRET_KEY")
+
+# IMPORTANT: use the full endpoint from Railway dashboard, not region
+RAILWAY_ENDPOINT = os.getenv(
+    "RAILWAY_ENDPOINT",
+    "https://t3.storageapi.dev"
+)
+
+def get_s3():
+    """Create S3 client."""
+    return boto3.client(
+        "s3",
+        aws_access_key_id=RAILWAY_ACCESS_KEY,
+        aws_secret_access_key=RAILWAY_SECRET_KEY,
+        endpoint_url=RAILWAY_ENDPOINT,
+        config=Config(signature_version="s3v4")
+    )
+
+@app.get("/health")
+def health_check():
+    """Simple health check route to confirm app is running."""
+    return {"status": "ok"}
+
+@app.get("/download-apk")
+def download_apk():
+    """Generate a fresh presigned URL every request."""
+    try:
+        s3 = get_s3()
+
+        url = s3.generate_presigned_url(
+            "get_object",
+            Params={
+                "Bucket": RAILWAY_BUCKET_NAME,
+                "Key": "kleno.apk"
+            },
+            ExpiresIn=604800
+        )
+
+        return RedirectResponse(url)
+
+    except Exception as e:
+        return JSONResponse(
+            {"error": str(e)},
+            status_code=500
+        )
+
+# --- Serve static assets ---
+app.mount("/images", StaticFiles(directory=str(BASE_DIR / "images")), name="images")
+app.mount("/video", StaticFiles(directory=str(BASE_DIR / "video")), name="video")
+# Mount the website folder so index.html, features.html, favicon.ico, etc. are served automatically
+app.mount("/", StaticFiles(directory=str(BASE_DIR / "website"), html=True), name="website")
+
+# Explicit routes for homepage and features
+@app.get("/")
+def homepage():
+    """Serve index.html as the homepage."""
+    return FileResponse(BASE_DIR / "website" / "index.html")
+
+@app.get("/features.html")
+def features_page():
+    """Serve features.html explicitly."""
+    return FileResponse(BASE_DIR / "website" / "features.html")
+
+@app.get("/favicon.ico")
+def favicon():
+    """Serve favicon.ico explicitly."""
+    return FileResponse(BASE_DIR / "website" / "favicon.ico")
