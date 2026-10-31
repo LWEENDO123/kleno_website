@@ -71,6 +71,11 @@ def main() -> int:
         action="store_true",
         help="Print the URL without changing website/features.html",
     )
+    parser.add_argument(
+        "--prompt-credentials",
+        action="store_true",
+        help="Ignore credential environment variables and ask for a fresh key pair",
+    )
     args = parser.parse_args()
 
     if not 1 <= args.expires <= MAX_EXPIRY_SECONDS:
@@ -88,10 +93,14 @@ def main() -> int:
         "Signing region",
         env_value("REGION", "AWS_DEFAULT_REGION", "RAILWAY_REGION", default="auto"),
     )
-    access_key = env_value("ACCESS_KEY_ID", "AWS_ACCESS_KEY_ID", "RAILWAY_ACCESS_KEY")
+    access_key = "" if args.prompt_credentials else env_value(
+        "ACCESS_KEY_ID", "AWS_ACCESS_KEY_ID", "RAILWAY_ACCESS_KEY"
+    )
     if not access_key:
         access_key = getpass.getpass("Railway access key: ").strip()
-    secret_key = env_value("SECRET_ACCESS_KEY", "AWS_SECRET_ACCESS_KEY", "RAILWAY_SECRET_KEY")
+    secret_key = "" if args.prompt_credentials else env_value(
+        "SECRET_ACCESS_KEY", "AWS_SECRET_ACCESS_KEY", "RAILWAY_SECRET_KEY"
+    )
     if not secret_key:
         secret_key = getpass.getpass("Railway secret key (hidden): ").strip()
 
