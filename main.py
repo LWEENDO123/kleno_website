@@ -11,15 +11,47 @@ BASE_DIR = Path(__file__).parent.resolve()
 app = FastAPI(title="Kleno Landing")
 
 # --- Railway bucket config from env ---
-RAILWAY_BUCKET_NAME = os.getenv("RAILWAY_BUCKET_NAME")
-RAILWAY_ACCESS_KEY = os.getenv("RAILWAY_ACCESS_KEY")
-RAILWAY_SECRET_KEY = os.getenv("RAILWAY_SECRET_KEY")
-
-# IMPORTANT: use the full endpoint from Railway dashboard, not region
-RAILWAY_ENDPOINT = os.getenv(
-    "RAILWAY_ENDPOINT",
-    "https://t3.storageapi.dev"
+# Prefer Railway's bucket references / AWS-compatible names. Keep the
+# RAILWAY_* aliases so existing deployments continue to work during migration.
+RAILWAY_BUCKET_NAME = (
+    os.getenv("BUCKET")
+    or os.getenv("AWS_S3_BUCKET_NAME")
+    or os.getenv("RAILWAY_BUCKET_NAME")
 )
+RAILWAY_ACCESS_KEY = (
+    os.getenv("ACCESS_KEY_ID")
+    or os.getenv("AWS_ACCESS_KEY_ID")
+    or os.getenv("RAILWAY_ACCESS_KEY")
+)
+RAILWAY_SECRET_KEY = (
+    os.getenv("SECRET_ACCESS_KEY")
+    or os.getenv("AWS_SECRET_ACCESS_KEY")
+    or os.getenv("RAILWAY_SECRET_KEY")
+)
+RAILWAY_ENDPOINT = (
+    os.getenv("ENDPOINT")
+    or os.getenv("AWS_ENDPOINT_URL")
+    or os.getenv("RAILWAY_ENDPOINT")
+    or "https://t3.storageapi.dev"
+)
+#lll
+# Railway's bucket credentials use region "auto". The SDK's default region
+# (us-east-1) can produce a URL that looks valid but fails signature checks.
+RAILWAY_REGION = (
+    os.getenv("REGION")
+    or os.getenv("AWS_DEFAULT_REGION")
+    or os.getenv("RAILWAY_REGION")
+    or "auto"
+)
+# Current Railway buckets use virtual-hosted URLs; older buckets may require
+# path style. Set AWS_S3_URL_STYLE to the value shown on the bucket's Credentials tab.
+RAILWAY_URL_STYLE = (
+    os.getenv("AWS_S3_URL_STYLE")
+    or os.getenv("RAILWAY_URL_STYLE")
+    or "virtual"
+).strip().lower()
+if RAILWAY_URL_STYLE not in {"virtual", "path"}:
+    raise RuntimeError("AWS_S3_URL_STYLE must be either 'virtual' or 'path'")
 
 def get_s3():
     """Create S3 client."""
@@ -28,7 +60,11 @@ def get_s3():
         aws_access_key_id=RAILWAY_ACCESS_KEY,
         aws_secret_access_key=RAILWAY_SECRET_KEY,
         endpoint_url=RAILWAY_ENDPOINT,
-        config=Config(signature_version="s3v4")
+        region_name=RAILWAY_REGION,
+        config=Config(
+            signature_version="s3v4",
+            s3={"addressing_style": RAILWAY_URL_STYLE},
+        ),
     )
 
 @app.get("/health")

@@ -208,7 +208,7 @@
 </section>
 
 <script>
-  const DOWNLOAD_URL = 'https://storage.railway.app/allocated-organizer-y95frn/kleno.apk?AWSAccessKeyId=tid__WjBeZAdBGIpuzLxVMRFGGjbNW_zwqgHIThSFciMIDSwIupfjU&Signature=SUJnpucD8AbZBKyeDUjNvR%2BX3hs%3D&Expires=1779083277';
+  const DOWNLOAD_URL = 'https://allocated-organizer-y95frn.t3.storageapi.dev/kleno.apk?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=tid__WjBeZAdBGIpuzLxVMRFGGjbNW_zwqgHIThSFciMIDSwIupfjU%2F20261031%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20261031T200358Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=04253b48afd4342f88181acf678ca07791fa74cce91bd59e19b625ac945ee89b';
 
   // Open modal (keeps existing modal behavior)
   document.getElementById('openTermsBtn').addEventListener('click', function () {
@@ -314,7 +314,7 @@
       document.getElementById('downloadStatus').style.display = 'block';
 
       const link = document.createElement('a');
-      link.href = 'https://storage.railway.app/allocated-organizer-y95frn/kleno.apk?AWSAccessKeyId=tid__WjBeZAdBGIpuzLxVMRFGGjbNW_zwqgHIThSFciMIDSwIupfjU&Signature=SUJnpucD8AbZBKyeDUjNvR%2BX3hs%3D&Expires=1779083277';
+      link.href = 'https://allocated-organizer-y95frn.t3.storageapi.dev/kleno.apk?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=tid__WjBeZAdBGIpuzLxVMRFGGjbNW_zwqgHIThSFciMIDSwIupfjU%2F20261031%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20261031T200358Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=04253b48afd4342f88181acf678ca07791fa74cce91bd59e19b625ac945ee89b';
       link.download = 'kleno.apk';
       document.body.appendChild(link);
       link.click();
